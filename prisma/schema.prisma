@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    uuid     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    email    String @unique
+    password String
+
+    createdAt DateTime @default(dbgenerated("date_trunc('second', now())")) @map("created_at")
+    updatedAt DateTime @default(dbgenerated("now()")) @updatedAt @map("updated_at")
+
+    purchases   Purchases[]
+    userBalance UserBalance?
+
+    @@map("users")
+}
+
+model UserBalance {
+    uuid     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    balance  Float
+    userUuid String @unique @map("user_uuid") @db.Uuid
+    user     User   @relation(fields: [userUuid], references: [uuid])
+
+    createdAt DateTime @default(dbgenerated("date_trunc('second', now())")) @map("created_at")
+    updatedAt DateTime @default(dbgenerated("now()")) @updatedAt @map("updated_at")
+
+    @@map("user_balance")
+}
+
+model Products {
+    uuid           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    marketHashName String @map("market_hash_name")
+    currency       String
+    suggestedPrice Float  @map("suggested_price")
+    itemPage       String @map("item_page")
+    marketPage     String @map("market_page")
+    minPrice       Float  @map("min_price")
+    maxPrice       Float  @map("max_price")
+    meanPrice      Float  @map("mean_price")
+    medianPrice    Float  @map("median_price")
+    quantity       Int
+
+    createdAt DateTime @default(dbgenerated("date_trunc('second', now())")) @map("created_at")
+    updatedAt DateTime @default(dbgenerated("now()")) @updatedAt @map("updated_at")
+
+    purchases Purchases[]
+
+    @@map("products")
+}
+
+model Purchases {
+    uuid        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    productUuid String @map("product_uuid") @db.Uuid
+    userUuid    String @map("user_uuid") @db.Uuid
+    quantity    Int
+
+    createdAt DateTime @default(dbgenerated("date_trunc('second', now())")) @map("created_at")
+    updatedAt DateTime @default(dbgenerated("now()")) @updatedAt @map("updated_at")
+
+    User    User?     @relation(fields: [userUuid], references: [uuid])
+    Product Products? @relation(fields: [productUuid], references: [uuid])
+
+    @@map("purchases")
+}

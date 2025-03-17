@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  short-api:
+    image: postgres:latest
+    container_name: 'short-api-db'
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=short-api
+      - TZ=UTC
+    ports:
+      - '5437:5432'
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: '500M'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 3s
+      timeout: 10s
+      retries: 3
+  short-api-redis:
+    image: 'redis:alpine'
+    container_name: short-api-redis
+
+    volumes:
+      - redis:/data
+    command: redis-server --save 60 1 --loglevel warning
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 3s
+      timeout: 10s
+      retries: 3
+    ports:
+      - '127.0.0.1:6379:6379'
+    restart: always
+    environment:
+      - TZ=Europe/Moscow
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '5000M'
+
+volumes:
+  anon-clickhouse-db:
+    name: anon-clickhouse-db
+  redis:
+    name: redis

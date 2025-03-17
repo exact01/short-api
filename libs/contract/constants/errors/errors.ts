@@ -1,0 +1,20 @@
+export const ERRORS = {
+    INTERNAL_SERVER_ERROR: { code: 'A001', message: 'Server error', httpCode: 500 },
+    FORBIDDEN_API: { code: 'C001', message: 'Authorization error', httpCode: 403 },
+    USER_NOT_CREATED: { code: 'C002', message: 'User not created', httpCode: 500 },
+    USER_NOT_FOUND: { code: 'C003', message: 'User not found', httpCode: 404 },
+    USER_ALREADY_EXISTS: { code: 'C004', message: 'User already exists', httpCode: 400 },
+    WRONG_PASSWORD: { code: 'C005', message: 'Wrong password or email', httpCode: 400 },
+    PRODUCT_NOT_FOUND: { code: 'C006', message: 'Product not found', httpCode: 404 },
+    PRODUCT_ALREADY_EXISTS: { code: 'C007', message: 'Product already exists', httpCode: 400 },
+    BALANCE_NOT_FOUND: { code: 'C008', message: 'Balance not found', httpCode: 404 },
+    BALANCE_ALREADY_EXISTS: { code: 'C009', message: 'Balance already exists', httpCode: 400 },
+    INSUFFICIENT_BALANCE: { code: 'C010', message: 'Insufficient balance', httpCode: 400 },
+    PURCHASE_NOT_FOUND: { code: 'C011', message: 'Purchase not found', httpCode: 404 },
+    INSUFFICIENT_QUANTITY: { code: 'C012', message: 'Insufficient quantity', httpCode: 400 },
+    INSUFFICIENT_BALANCE_FOR_PURCHASE: {
+        code: 'C013',
+        message: 'Insufficient balance for purchase',
+        httpCode: 400,
+    },
+};

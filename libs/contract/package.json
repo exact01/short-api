@@ -1,0 +1,24 @@
+{
+  "name": "@red-team007/demo-contracts",
+  "version": "1.0.40",
+  "description": "Demo contracts",
+  "scripts": {
+    "clean": "rm -rf build",
+    "build:backend": "tsc -p tsconfig.backend.json",
+    "build:frontend": "tsc -p tsconfig.frontend.json",
+    "build": "npm run clean && npm run build:backend && npm run build:frontend",
+    "prepublish": "npm run build"
+  },
+  "keywords": [],
+  "author": "Ivan Chertan",
+  "license": "ISC",
+  "dependencies": {
+    "zod": "3.22.4"
+  },
+  "main": "index",
+  "browser": "build/frontend/index.js",
+  "types": "build/backend/index.d.ts",
+  "files": [
+    "build/**/*"
+  ]
+}
